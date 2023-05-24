@@ -59,7 +59,7 @@ export default function Home() {
   const [strokeColor, setStrokeColor] = useState(new paper.Color(0, 0, 0) as paper.Color);
   const [fillColor, setFillColor] = useState(new paper.Color(0, 0, 0) as paper.Color);
   const [singleObjSelected, setSingleObjSelected] = useState(false);
-  const [selectedObj, setSelectedObj] = useState('');
+  const [selectedObj, setSelectedObj] = useState<paper.Item | null>(null);
 
   function activateCursor() {
     tCursor.activate();
@@ -91,7 +91,7 @@ export default function Home() {
 
         if (selectedItem) {
           selectedItem.selected = true;
-          setSelectedObj(JSON.stringify(selectedItem.exportJSON({asString: false}), null, 2));
+          setSelectedObj(selectedItem);
         }
 
         setSingleObjSelected(paper.project.selectedItems.length === 1);
@@ -217,6 +217,11 @@ export default function Home() {
     // event.preventDefault();
   }
 
+  function onChangeProp(json: string) {
+    if (!selectedObj) return;
+    setSelectedObj(selectedObj.importJSON(json));
+  }
+
   return (
     <main className={styles.main}>
       <div>
@@ -233,7 +238,14 @@ export default function Home() {
             <button onClick={() => addLine()}>Line</button>
           </li>
         </ul>
-        {singleObjSelected && <pre>{selectedObj}</pre>}
+        {singleObjSelected && selectedObj &&
+            <textarea
+                value={
+                  (singleObjSelected && selectedObj) ?
+                    JSON.stringify(selectedObj.exportJSON({asString: false}), null, 2) : ''
+                }
+                onChange={e => onChangeProp(e.target.value)}
+            />}
       </div>
       <Canvas
         pScope={paper}
