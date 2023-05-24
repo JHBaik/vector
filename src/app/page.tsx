@@ -222,10 +222,26 @@ export default function Home() {
     setSelectedObj(selectedObj.importJSON(json));
   }
 
+  function toBack() {
+    selectedObj && selectedObj.sendToBack();
+  }
+
+  function toFront() {
+    selectedObj && selectedObj.bringToFront();
+  }
+
   return (
     <main className={styles.main}>
-      <div>
+      <div className={styles.ctrlPanel}>
+        <span>Z-Index</span>
+        <ul>
+          <li><button onClick={toFront}>Bring to top</button></li>
+          <li><button onClick={toBack}>Send to back</button></li>
+        </ul>
+        <button></button>
+        <br/>
         <button onClick={() => activateCursor()}>Selection</button>
+        <br/>
         <span>Add obj</span>
         <ul>
           <li>
@@ -247,11 +263,13 @@ export default function Home() {
                 onChange={e => onChangeProp(e.target.value)}
             />}
       </div>
-      <Canvas
-        pScope={paper}
-        height={600} width={900} style={{background: 'white'}}
-        onWheel={onMouseWheel}
-      ></Canvas>
+      <div>
+        <Canvas
+          pScope={paper}
+          height={600} width={900} style={{background: 'white'}}
+          onWheel={onMouseWheel}
+        ></Canvas>
+      </div>
     </main>
   );
 }
