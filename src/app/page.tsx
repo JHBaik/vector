@@ -1,21 +1,25 @@
 'use client';
-
 import styles from './page.module.css';
 import React, { useEffect, useMemo, useRef, useState, WheelEvent } from 'react';
-import * as paper from 'paper/dist/paper-core';
-import { PaperScope } from 'paper/dist/paper-core';
+import type * as paper from 'paper';
 import { SketchPicker } from 'react-color';
+import { SafeHydrate } from '@/util/safeh';
+import dynamic from 'next/dynamic';
+import NoSSR from 'react-no-ssr';
 
 function Canvas({
                   pScope,
                   ...props
                 }: {
-  pScope: paper.PaperScope,
+  pScope: paper.PaperScope|undefined,
 } & React.CanvasHTMLAttributes<HTMLCanvasElement>) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   console.log('canvas render');
 
   useEffect(() => {
+
+    if(!pScope)return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
     console.log({x: pScope});
@@ -32,37 +36,46 @@ function Canvas({
   );
 }
 
-export default function Home() {
-  const paper = useMemo(() =>
-      new PaperScope()
-    , []);
+function Home() {
+  const [pScope, setPScope] = useState<paper.PaperScope>();
+
+  useEffect(() => {
+    (async ()=>{
+      if(pScope)return;
+      const paper = await import('paper');
+      setPScope(new paper.PaperScope());
+    })();
+
+    return () => {};
+  }, [pScope]);
 
   useEffect(() => {
     let id = setInterval(() => {
-      console.log('SAVE');
-      localStorage.setItem('DATA', paper.project.exportJSON());
+      if(!pScope)return;
+      localStorage.setItem('DATA', pScope.project.exportJSON());
     }, 5000);
 
     return () => {
       clearInterval(id);
     };
-  }, [paper]);
+  }, [pScope]);
 
-  const tCursor = useMemo(() => new paper.Tool(), [paper]);
-  const tCircle = useMemo(() => new paper.Tool(), [paper]);
-  const tRectangle = useMemo(() => new paper.Tool(), [paper]);
-  const tLine = useMemo(() => new paper.Tool(), [paper]);
+  const tCursor = useMemo(() => {if(!pScope)return;return new pScope.Tool();}, [pScope]);
+  const tCircle = useMemo(() => {if(!pScope)return;return new pScope.Tool();}, [pScope]);
+  const tRectangle = useMemo(() => {if(!pScope)return;return new pScope.Tool();}, [pScope]);
+  const tLine = useMemo(() => {if(!pScope)return;return new pScope.Tool();}, [pScope]);
 
   useEffect(() => {
+    if(!pScope||!tCursor)return;
     tCursor.activate();
-  }, [tCursor, paper]);
+  }, [tCursor, pScope]);
 
-  const [strokeColor, setStrokeColor] = useState(new paper.Color(0, 0, 0) as paper.Color);
-  const [fillColor, setFillColor] = useState(new paper.Color(0, 0, 0) as paper.Color);
+  const [strokeColor, setStrokeColor] = useState('#000000');
+  const [fillColor, setFillColor] = useState('#000000');
   const [singleObjSelected, setSingleObjSelected] = useState(false);
   const [selectedObj, setSelectedObj] = useState<paper.Item | null>(null);
 
-  function activateCursor() {
+  function activateCursor() {if(!pScope||!tCursor)return;
     tCursor.activate();
 
     const state = {
@@ -87,7 +100,7 @@ export default function Home() {
         let selectedItem = e.item;
 
         if (!state.meta) {
-          paper.project.deselectAll();
+          pScope.project.deselectAll();
         }
 
         if (selectedItem) {
@@ -95,49 +108,52 @@ export default function Home() {
           setSelectedObj(selectedItem);
         }
 
-        setSingleObjSelected(paper.project.selectedItems.length === 1);
+        setSingleObjSelected(pScope.project.selectedItems.length === 1);
       }
       state.mouseDragging = false;
     };
     tCursor.onMouseDrag = (e: paper.ToolEvent) => {
       state.mouseDragging = true;
-      paper.project.selectedItems.forEach(it => it.position = it.position.add(e.delta));
+      pScope.project.selectedItems.forEach(it => it.position = it.position.add(e.delta));
     };
   }
 
   function addCircle() {
+    if(!pScope||!tCircle)return;
     tCircle.activate();
 
     function emptyCircle() {
-      const circle = new paper.Shape.Circle([0, 0], 0);
-      circle.strokeColor = strokeColor;
-      circle.fillColor = fillColor;
+      if(!pScope||!tCircle)return;
+      const circle = new pScope.Shape.Circle([0, 0], 0);
+      circle.strokeColor = new pScope.Color(strokeColor);
+      circle.fillColor = new pScope.Color(fillColor);
       return circle;
     }
 
     let circle = emptyCircle();
 
     tCircle.onMouseDown = (e: paper.ToolEvent) => {
-      circle.bounds.center = e.downPoint;
+      circle!!.bounds.center = e.downPoint;
     };
 
     tCircle.onMouseDrag = (e: paper.ToolEvent) => {
-      circle.radius = e.downPoint.subtract(e.point).abs().length;
+      circle!!.radius = e.downPoint.subtract(e.point).abs().length;
     };
 
     tCircle.onMouseUp = () => {
-      if (circle.radius !== 0) {
+      if (circle!!.radius !== 0) {
         circle = emptyCircle();
       }
     };
   }
 
   function addRectangle() {
+    if(!pScope||!tRectangle)return;
     tRectangle.activate();
 
-    let rect = new paper.Shape.Rectangle([0, 0, 0, 0]);
-    rect.strokeColor = strokeColor;
-    rect.fillColor = fillColor;
+    let rect = new pScope.Shape.Rectangle([0, 0, 0, 0]);
+    rect.strokeColor = new pScope.Color(strokeColor);
+    rect.fillColor = new pScope.Color(fillColor);
 
     tRectangle.onMouseDown = (e: paper.ToolEvent) => {
       rect.bounds.topLeft = e.downPoint;
@@ -145,7 +161,7 @@ export default function Home() {
 
     tRectangle.onMouseDrag = (e: paper.ToolEvent) => {
       let delta = e.downPoint.subtract(e.point);
-      rect.size = new paper.Size(delta.abs());
+      rect.size = new pScope.Size(delta.abs());
       switch (delta.quadrant) {
         case 1:
           rect.bounds.bottomRight = e.downPoint;
@@ -163,16 +179,17 @@ export default function Home() {
     };
 
     tRectangle.onMouseUp = () => {
-      rect = new paper.Shape.Rectangle([0, 0, 0, 0]);
-      rect.strokeColor = strokeColor;
-      rect.fillColor = fillColor;
+      rect = new pScope.Shape.Rectangle([0, 0, 0, 0]);
+      rect.strokeColor = new pScope.Color(strokeColor);
+      rect.fillColor = new pScope.Color(fillColor);
     };
   }
 
   function addLine() {
+    if(!pScope||!tLine)return;
     tLine.activate();
-    let line: paper.Path = new paper.Path();
-    line.strokeColor = new paper.Color(255, 0, 0);
+    let line: paper.Path = new pScope.Path();
+    line.strokeColor = new pScope.Color(255, 0, 0);
 
     tLine.onMouseDown = (e: paper.ToolEvent) => {
       line.moveTo(e.point);
@@ -183,37 +200,39 @@ export default function Home() {
     };
 
     tLine.onMouseUp = (e: paper.ToolEvent) => {
-      line = new paper.Path();
-      line.strokeColor = new paper.Color(255, 0, 0);
+      line = new pScope.Path();
+      line.strokeColor = new pScope.Color(255, 0, 0);
     };
   }
 
   function onMouseWheel(event: WheelEvent<HTMLCanvasElement>) {
-    var newZoom = paper.view.zoom;
-    var oldZoom = paper.view.zoom;
+    if(!pScope||!tCircle)return;
+
+    var newZoom = pScope.view.zoom;
+    var oldZoom = pScope.view.zoom;
     if (event.deltaY > 0) {
       console.log('zoom -');
-      newZoom = paper.view.zoom * 0.98;
+      newZoom = pScope.view.zoom * 0.98;
     } else {
       console.log('zoom +');
-      newZoom = paper.view.zoom * 1.02;
+      newZoom = pScope.view.zoom * 1.02;
     }
 
     var beta = oldZoom / newZoom;
     const {x, y} = (event.target as HTMLCanvasElement).getBoundingClientRect();
-    var mousePosition = (new paper.Point(event.clientX, event.clientY)).subtract([x, y]);
+    var mousePosition = (new pScope.Point(event.clientX, event.clientY)).subtract([x, y]);
 
     //viewToProject: gives the coordinates in the Project space from the Screen Coordinates
-    var viewPosition = paper.view.viewToProject(mousePosition);
+    var viewPosition = pScope.view.viewToProject(mousePosition);
 
     var mpos = viewPosition;
-    var ctr = paper.view.center;
+    var ctr = pScope.view.center;
 
     var pc = mpos.subtract(ctr);
     var offset = mpos.subtract(pc.multiply(beta)).subtract(ctr);
 
-    paper.view.zoom = newZoom;
-    paper.view.center = paper.view.center.add(offset);
+    pScope.view.zoom = newZoom;
+    pScope.view.center = pScope.view.center.add(offset);
 
     // event.preventDefault();
   }
@@ -261,14 +280,15 @@ export default function Home() {
         </ul>
         <span>Color</span>
         <span>Stroke Color <div className={styles.selectedColor}
-                                style={{backgroundColor: strokeColor.toCSS(true)}}/></span><br/>
+                                style={{backgroundColor: strokeColor}}/></span><br/>
 
-        <span>Fill Color<div className={styles.selectedColor} style={{backgroundColor: fillColor.toCSS(true)}}/></span>
+        <span>Fill Color<div className={styles.selectedColor} style={{backgroundColor: fillColor}}/></span>
 
         <SketchPicker
-          color={fillColor.toCSS(true)}
+          color={fillColor}
           onChangeComplete={color => {
-            setFillColor(new paper.Color(color.hex));
+            if(!pScope||!tCircle)return;
+            setFillColor(color.hex);
           }}
         />
 
@@ -283,11 +303,28 @@ export default function Home() {
       </div>
       <div>
         <Canvas
-          pScope={paper}
+          pScope={pScope}
           height={600} width={900} style={{background: 'white'}}
           onWheel={onMouseWheel}
         ></Canvas>
       </div>
     </main>
   );
+}
+
+function SafeHome() {
+  return (
+    <NoSSR>
+      <SafeHydrate><Home/></SafeHydrate>
+    </NoSSR>
+  );
+}
+
+
+export default dynamic(() => Promise.resolve(SafeHome), {
+  ssr: false
+})
+
+export function generateStaticParams() {
+  return []
 }
