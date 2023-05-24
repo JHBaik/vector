@@ -4,6 +4,7 @@ import styles from './page.module.css';
 import React, { useEffect, useMemo, useRef, useState, WheelEvent } from 'react';
 import * as paper from 'paper';
 import { PaperScope } from 'paper';
+import { SketchPicker } from 'react-color';
 
 function Canvas({
                   pScope,
@@ -235,8 +236,12 @@ export default function Home() {
       <div className={styles.ctrlPanel}>
         <span>Z-Index</span>
         <ul>
-          <li><button onClick={toFront}>Bring to top</button></li>
-          <li><button onClick={toBack}>Send to back</button></li>
+          <li>
+            <button onClick={toFront}>Bring to top</button>
+          </li>
+          <li>
+            <button onClick={toBack}>Send to back</button>
+          </li>
         </ul>
         <button></button>
         <br/>
@@ -254,6 +259,19 @@ export default function Home() {
             <button onClick={() => addLine()}>Line</button>
           </li>
         </ul>
+        <span>Color</span>
+        <span>Stroke Color <div className={styles.selectedColor}
+                                style={{backgroundColor: strokeColor.toCSS(true)}}/></span><br/>
+
+        <span>Fill Color<div className={styles.selectedColor} style={{backgroundColor: fillColor.toCSS(true)}}/></span>
+
+        <SketchPicker
+          color={fillColor.toCSS(true)}
+          onChangeComplete={color => {
+            setFillColor(new paper.Color(color.hex));
+          }}
+        />
+
         {singleObjSelected && selectedObj &&
             <textarea
                 value={
