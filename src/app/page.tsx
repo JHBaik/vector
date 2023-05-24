@@ -230,7 +230,7 @@ export default function Home() {
   function toFront() {
     selectedObj && selectedObj.bringToFront();
   }
-
+console.log('OK')
   return (
     <main className={styles.main}>
       <div className={styles.ctrlPanel}>
