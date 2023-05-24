@@ -208,8 +208,8 @@ function Home() {
   function onMouseWheel(event: WheelEvent<HTMLCanvasElement>) {
     if(!pScope||!tCircle)return;
 
-    var newZoom = pScope.view.zoom;
-    var oldZoom = pScope.view.zoom;
+    let newZoom: number;
+    const oldZoom = pScope.view.zoom;
     if (event.deltaY > 0) {
       console.log('zoom -');
       newZoom = pScope.view.zoom * 0.98;
@@ -218,18 +218,16 @@ function Home() {
       newZoom = pScope.view.zoom * 1.02;
     }
 
-    var beta = oldZoom / newZoom;
+    const beta = oldZoom / newZoom;
     const {x, y} = (event.target as HTMLCanvasElement).getBoundingClientRect();
-    var mousePosition = (new pScope.Point(event.clientX, event.clientY)).subtract([x, y]);
+    const mousePosition = (new pScope.Point(event.clientX, event.clientY)).subtract([x, y]);
 
     //viewToProject: gives the coordinates in the Project space from the Screen Coordinates
-    var viewPosition = pScope.view.viewToProject(mousePosition);
+    const mpos = pScope.view.viewToProject(mousePosition);
+    const ctr = pScope.view.center;
 
-    var mpos = viewPosition;
-    var ctr = pScope.view.center;
-
-    var pc = mpos.subtract(ctr);
-    var offset = mpos.subtract(pc.multiply(beta)).subtract(ctr);
+    const pc = mpos.subtract(ctr);
+    const offset = mpos.subtract(pc.multiply(beta)).subtract(ctr);
 
     pScope.view.zoom = newZoom;
     pScope.view.center = pScope.view.center.add(offset);
