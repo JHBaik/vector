@@ -21,6 +21,8 @@ function Canvas({
     console.log('setup pp');
     pScope.setup(canvas);
 
+    const savedData = localStorage.getItem('DATA');
+    savedData && pScope.project.importJSON(savedData);
   }, [pScope, canvasRef]);
 
   return (
@@ -30,45 +32,69 @@ function Canvas({
 }
 
 export default function Home() {
-  const paper = useMemo(() => new PaperScope(), []);
+  const paper = useMemo(() =>
+      new PaperScope()
+    , []);
+
+  useEffect(() => {
+    let id = setInterval(() => {
+      console.log('SAVE');
+      localStorage.setItem('DATA', paper.project.exportJSON());
+    }, 5000);
+
+    return () => {
+      clearInterval(id);
+    };
+  }, [paper]);
 
   const tCursor = useMemo(() => new paper.Tool(), [paper]);
   const tCircle = useMemo(() => new paper.Tool(), [paper]);
   const tRectangle = useMemo(() => new paper.Tool(), [paper]);
   const tLine = useMemo(() => new paper.Tool(), [paper]);
 
-  tCursor.activate();
+  useEffect(() => {
+    tCursor.activate();
+  }, [tCursor, paper]);
 
   const [strokeColor, setStrokeColor] = useState(new paper.Color(0, 0, 0) as paper.Color);
   const [fillColor, setFillColor] = useState(new paper.Color(0, 0, 0) as paper.Color);
 
   function activateCursor() {
     tCursor.activate();
-    const keyStat = {
-      meta: false
-    };
 
-    tCursor.onMouseUp = (e: paper.ToolEvent) => {
-      let selectedItem = e.item;
-
-      if (!keyStat.meta) {
-        paper.project.deselectAll();
-      }
-      if (selectedItem) {
-        selectedItem.selected = true;
-      }
+    const state = {
+      meta: false,
+      mouseDragging: false,
     };
 
     tCursor.onKeyDown = (e: paper.KeyEvent) => {
       if (e.key === 'meta') {
-        keyStat.meta = true;
+        state.meta = true;
       }
     };
 
     tCursor.onKeyUp = (e: paper.KeyEvent) => {
       if (e.key === 'meta') {
-        keyStat.meta = false;
+        state.meta = false;
       }
+    };
+
+    tCursor.onMouseUp = (e: paper.ToolEvent) => {
+      if (!state.mouseDragging) {
+        let selectedItem = e.item;
+
+        if (!state.meta) {
+          paper.project.deselectAll();
+        }
+        if (selectedItem) {
+          selectedItem.selected = true;
+        }
+      }
+      state.mouseDragging = false;
+    };
+    tCursor.onMouseDrag = (e: paper.ToolEvent) => {
+      state.mouseDragging = true;
+      paper.project.selectedItems.forEach(it => it.position = it.position.add(e.delta));
     };
   }
 
