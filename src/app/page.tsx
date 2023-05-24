@@ -58,6 +58,8 @@ export default function Home() {
 
   const [strokeColor, setStrokeColor] = useState(new paper.Color(0, 0, 0) as paper.Color);
   const [fillColor, setFillColor] = useState(new paper.Color(0, 0, 0) as paper.Color);
+  const [singleObjSelected, setSingleObjSelected] = useState(false);
+  const [selectedObj, setSelectedObj] = useState('');
 
   function activateCursor() {
     tCursor.activate();
@@ -86,9 +88,13 @@ export default function Home() {
         if (!state.meta) {
           paper.project.deselectAll();
         }
+
         if (selectedItem) {
           selectedItem.selected = true;
+          setSelectedObj(JSON.stringify(selectedItem.exportJSON({asString: false}), null, 2));
         }
+
+        setSingleObjSelected(paper.project.selectedItems.length === 1);
       }
       state.mouseDragging = false;
     };
@@ -227,6 +233,7 @@ export default function Home() {
             <button onClick={() => addLine()}>Line</button>
           </li>
         </ul>
+        {singleObjSelected && <pre>{selectedObj}</pre>}
       </div>
       <Canvas
         pScope={paper}
