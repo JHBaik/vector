@@ -2,8 +2,8 @@
 
 import styles from './page.module.css';
 import React, { useEffect, useMemo, useRef, useState, WheelEvent } from 'react';
-import * as paper from 'paper';
-import { PaperScope } from 'paper';
+import * as paper from 'paper/dist/paper-core';
+import { PaperScope } from 'paper/dist/paper-core';
 import { SketchPicker } from 'react-color';
 
 function Canvas({

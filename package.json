@@ -12,8 +12,10 @@
     "@types/node": "20.2.3",
     "@types/react": "18.2.7",
     "@types/react-dom": "18.2.4",
+    "canvas": "^2.11.2",
     "eslint": "8.41.0",
     "eslint-config-next": "13.4.3",
+    "ignore-loader": "^0.1.2",
     "jsdom": "^22.0.0",
     "next": "13.4.3",
     "paper": "^0.12.17",
@@ -23,6 +25,7 @@
     "typescript": "5.0.4"
   },
   "devDependencies": {
-    "@types/react-color": "^3.0.6"
+    "@types/react-color": "^3.0.6",
+    "paper-loader": "^0.1.2"
   }
 }
