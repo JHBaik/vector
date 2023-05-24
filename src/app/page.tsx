@@ -11,14 +11,14 @@ function Canvas({
                   pScope,
                   ...props
                 }: {
-  pScope: paper.PaperScope|undefined,
+  pScope: paper.PaperScope | undefined,
 } & React.CanvasHTMLAttributes<HTMLCanvasElement>) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   console.log('canvas render');
 
   useEffect(() => {
 
-    if(!pScope)return;
+    if (!pScope) return;
 
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -40,18 +40,19 @@ function Home() {
   const [pScope, setPScope] = useState<paper.PaperScope>();
 
   useEffect(() => {
-    (async ()=>{
-      if(pScope)return;
+    (async () => {
+      if (pScope) return;
       const paper = await import('paper');
       setPScope(new paper.PaperScope());
     })();
 
-    return () => {};
+    return () => {
+    };
   }, [pScope]);
 
   useEffect(() => {
     let id = setInterval(() => {
-      if(!pScope)return;
+      if (!pScope) return;
       localStorage.setItem('DATA', pScope.project.exportJSON());
     }, 5000);
 
@@ -60,13 +61,25 @@ function Home() {
     };
   }, [pScope]);
 
-  const tCursor = useMemo(() => {if(!pScope)return;return new pScope.Tool();}, [pScope]);
-  const tCircle = useMemo(() => {if(!pScope)return;return new pScope.Tool();}, [pScope]);
-  const tRectangle = useMemo(() => {if(!pScope)return;return new pScope.Tool();}, [pScope]);
-  const tLine = useMemo(() => {if(!pScope)return;return new pScope.Tool();}, [pScope]);
+  const tCursor = useMemo(() => {
+    if (!pScope) return;
+    return new pScope.Tool();
+  }, [pScope]);
+  const tCircle = useMemo(() => {
+    if (!pScope) return;
+    return new pScope.Tool();
+  }, [pScope]);
+  const tRectangle = useMemo(() => {
+    if (!pScope) return;
+    return new pScope.Tool();
+  }, [pScope]);
+  const tLine = useMemo(() => {
+    if (!pScope) return;
+    return new pScope.Tool();
+  }, [pScope]);
 
   useEffect(() => {
-    if(!pScope||!tCursor)return;
+    if (!pScope || !tCursor) return;
     tCursor.activate();
   }, [tCursor, pScope]);
 
@@ -75,7 +88,8 @@ function Home() {
   const [singleObjSelected, setSingleObjSelected] = useState(false);
   const [selectedObj, setSelectedObj] = useState<paper.Item | null>(null);
 
-  function activateCursor() {if(!pScope||!tCursor)return;
+  function activateCursor() {
+    if (!pScope || !tCursor) return;
     tCursor.activate();
 
     const state = {
@@ -119,11 +133,11 @@ function Home() {
   }
 
   function addCircle() {
-    if(!pScope||!tCircle)return;
+    if (!pScope || !tCircle) return;
     tCircle.activate();
 
     function emptyCircle() {
-      if(!pScope||!tCircle)return;
+      if (!pScope || !tCircle) return;
       const circle = new pScope.Shape.Circle([0, 0], 0);
       circle.strokeColor = new pScope.Color(strokeColor);
       circle.fillColor = new pScope.Color(fillColor);
@@ -148,7 +162,7 @@ function Home() {
   }
 
   function addRectangle() {
-    if(!pScope||!tRectangle)return;
+    if (!pScope || !tRectangle) return;
     tRectangle.activate();
 
     let rect = new pScope.Shape.Rectangle([0, 0, 0, 0]);
@@ -186,7 +200,7 @@ function Home() {
   }
 
   function addLine() {
-    if(!pScope||!tLine)return;
+    if (!pScope || !tLine) return;
     tLine.activate();
     let line: paper.Path = new pScope.Path();
     line.strokeColor = new pScope.Color(255, 0, 0);
@@ -206,7 +220,7 @@ function Home() {
   }
 
   function onMouseWheel(event: WheelEvent<HTMLCanvasElement>) {
-    if(!pScope||!tCircle)return;
+    if (!pScope || !tCircle) return;
 
     let newZoom: number;
     const oldZoom = pScope.view.zoom;
@@ -285,7 +299,7 @@ function Home() {
         <SketchPicker
           color={fillColor}
           onChangeComplete={color => {
-            if(!pScope||!tCircle)return;
+            if (!pScope || !tCircle) return;
             setFillColor(color.hex);
           }}
         />
@@ -304,7 +318,7 @@ function Home() {
           pScope={pScope}
           height={600} width={900} style={{background: 'white'}}
           onWheel={onMouseWheel}
-        ></Canvas>
+        />
       </div>
     </main>
   );
@@ -321,8 +335,8 @@ function SafeHome() {
 
 export default dynamic(() => Promise.resolve(SafeHome), {
   ssr: false
-})
+});
 
 export function generateStaticParams() {
-  return []
+  return [];
 }
