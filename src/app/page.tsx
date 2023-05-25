@@ -263,16 +263,25 @@ function Home() {
     selectedObj.item && selectedObj.item.bringToFront();
   }
 
+  function deleteObj() {
+    if(!pScope)return;
+
+    pScope.project.selectedItems.forEach(it => it.remove());
+  }
+
   return (
     <main className={styles.main}>
       <div className={styles.ctrlPanel}>
-        <span>Z-Index</span>
+        <span>Per selected obj</span>
         <ul>
           <li>
             <button onClick={toFront}>Bring to top</button>
           </li>
           <li>
             <button onClick={toBack}>Send to back</button>
+          </li>
+          <li>
+            <button onClick={deleteObj}>delete</button>
           </li>
         </ul>
         <button></button>
