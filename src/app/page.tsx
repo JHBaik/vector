@@ -86,7 +86,7 @@ function Home() {
   const [strokeColor, setStrokeColor] = useState('#000000');
   const [fillColor, setFillColor] = useState('#000000');
   const [singleObjSelected, setSingleObjSelected] = useState(false);
-  const [selectedObj, setSelectedObj] = useState<paper.Item | null>(null);
+  const [selectedObj, setSelectedObj] = useState<{item:paper.Item | null}>({item:null});
 
   function activateCursor() {
     if (!pScope || !tCursor) return;
@@ -119,7 +119,7 @@ function Home() {
 
         if (selectedItem) {
           selectedItem.selected = true;
-          setSelectedObj(selectedItem);
+          setSelectedObj({item:selectedItem});
         }
 
         setSingleObjSelected(pScope.project.selectedItems.length === 1);
@@ -250,16 +250,17 @@ function Home() {
   }
 
   function onChangeProp(json: string) {
-    if (!selectedObj) return;
-    setSelectedObj(selectedObj.importJSON(json));
+    if (!selectedObj.item) return;
+    selectedObj.item.importJSON(json);
+    setSelectedObj({item:selectedObj.item});
   }
 
   function toBack() {
-    selectedObj && selectedObj.sendToBack();
+    selectedObj.item && selectedObj.item.sendToBack();
   }
 
   function toFront() {
-    selectedObj && selectedObj.bringToFront();
+    selectedObj.item && selectedObj.item.bringToFront();
   }
 
   return (
@@ -303,16 +304,15 @@ function Home() {
             setFillColor(color.hex);
           }}
         />
-
-        {singleObjSelected && selectedObj &&
-            <textarea
-                value={
-                  (singleObjSelected && selectedObj) ?
-                    JSON.stringify(selectedObj.exportJSON({asString: false}), null, 2) : ''
-                }
-                onChange={e => onChangeProp(e.target.value)}
-            />}
       </div>
+      {singleObjSelected && selectedObj &&
+          <textarea
+              value={
+                (singleObjSelected && selectedObj.item) ?
+                  JSON.stringify(selectedObj.item.exportJSON({asString: false}), null, 2) : ''
+              }
+              onChange={e => onChangeProp(e.target.value)}
+          />}
       <div>
         <Canvas
           pScope={pScope}
