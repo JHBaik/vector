@@ -155,9 +155,7 @@ function Home() {
     };
 
     tCircle.onMouseUp = () => {
-      if (circle!!.radius !== 0) {
-        circle = emptyCircle();
-      }
+      tCursor?.activate()
     };
   }
 
@@ -193,9 +191,7 @@ function Home() {
     };
 
     tRectangle.onMouseUp = () => {
-      rect = new pScope.Shape.Rectangle([0, 0, 0, 0]);
-      rect.strokeColor = new pScope.Color(strokeColor);
-      rect.fillColor = new pScope.Color(fillColor);
+      tCursor?.activate()
     };
   }
 
@@ -214,8 +210,7 @@ function Home() {
     };
 
     tLine.onMouseUp = (e: paper.ToolEvent) => {
-      line = new pScope.Path();
-      line.strokeColor = new pScope.Color(255, 0, 0);
+      tCursor?.activate()
     };
   }
 
