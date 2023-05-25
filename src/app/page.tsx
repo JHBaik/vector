@@ -80,7 +80,7 @@ function Home() {
 
   useEffect(() => {
     if (!pScope || !tCursor) return;
-    tCursor.activate();
+    activateCursor();
   }, [tCursor, pScope]);
 
   const [strokeColor, setStrokeColor] = useState('#000000');
