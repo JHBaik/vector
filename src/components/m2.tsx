@@ -3,15 +3,13 @@ import { useShapeBaseForm } from "@/components/useShapeBaseForm";
 import { CircleCreation } from "@/components/circleCreation";
 import { RectangleCreation } from "@/components/rectangleCreation";
 
-export function M1() {
+export function M2() {
   const ctx = useCanvasCtx();
   const { baseShapeForm: baseShapeForm, baseProps } = useShapeBaseForm();
+
   return (
     <div style={{ maxWidth: 180 }}>
-      <pre style={{ height: 350, overflow: "scroll", fontSize: 9 }}>
-        {JSON.stringify(ctx, null, 4)}
-      </pre>
-      <hr />
+      <span>Selected : </span>
       {baseShapeForm}
       <hr />
       <CircleCreation baseProps={baseProps} />

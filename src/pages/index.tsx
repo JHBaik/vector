@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { useCanvasCtx } from "@/lib/hooks/useCanvasCtx";
 import { usePaperJs } from "@/lib/hooks/usePaperJs";
 import { PaperJsAdopter } from "@/lib/paper/paperJsAdopter";
+import { M2 } from "@/components/m2";
 
 export default function Index() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -40,11 +41,12 @@ export default function Index() {
             style={{ width: "100%", height: "100%", backgroundColor: "green" }}
           />
         </div>
+        <M2 />
       </div>
       <pre
         style={{
           overflow: "scroll",
-          height: "100%",
+          height: "150px",
           backgroundColor: "#ebebeb",
         }}
       >
