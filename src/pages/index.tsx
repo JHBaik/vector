@@ -29,7 +29,7 @@ export default function Index() {
     return () => {
       ctx.unregisterListener(cb);
     };
-  }, [canvasRef, paperJs]);
+  }, [canvasRef, paperJs, ctx]);
 
   return (
     <div className={[styles.splitVertical, styles.root].join(" ")}>

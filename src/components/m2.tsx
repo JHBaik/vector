@@ -1,7 +1,7 @@
 import { useCanvasCtx } from "@/lib/hooks/useCanvasCtx";
 import { useShapeBaseForm } from "@/components/useShapeBaseForm";
-import { CircleCreation } from "@/components/circleCreation";
-import { RectangleCreation } from "@/components/rectangleCreation";
+import { CircleForm } from "@/components/circleForm";
+import { RectangleForm } from "@/components/rectangleForm";
 
 export function M2() {
   const ctx = useCanvasCtx();
@@ -12,9 +12,9 @@ export function M2() {
       <span>Selected : </span>
       {baseShapeForm}
       <hr />
-      <CircleCreation baseProps={baseProps} />
+      {/*<CircleCreation baseProps={baseProps} />*/}
       <hr />
-      <RectangleCreation baseProps={baseProps} />
+      {/*<RectangleCreation baseProps={baseProps} />*/}
     </div>
   );
 }
