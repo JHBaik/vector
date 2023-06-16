@@ -14,7 +14,9 @@ export class PaperJsAdopter {
   private paper: paper.PaperScope;
 
   constructor(canvas: HTMLCanvasElement, paper: paper.PaperScope) {
+    console.warn("Recreating paper ctx");
     paper.setup(canvas);
+    paper.view.update();
     this.paper = paper;
 
     const tool = new this.paper.Tool();

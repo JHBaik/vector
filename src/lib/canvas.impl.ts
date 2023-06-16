@@ -28,6 +28,8 @@ class CanvasCtxImpl implements CanvasCtx {
   };
 
   handleCommand(command: AllCommands) {
+    this.log(command);
+
     switch (command.name) {
       case "shape/new": {
         this.canvas.shapes.push({
@@ -86,8 +88,9 @@ class CanvasCtxImpl implements CanvasCtx {
     this.cbs.delete(cb);
   }
 
-  log(str: string): void {
-    this.debugLog = str + "\n" + this.debugLog;
+  log(str: string | object): void {
+    const _str = typeof str === "string" ? str : JSON.stringify(str);
+    this.debugLog = _str + "\n" + this.debugLog;
     this.onChange();
   }
 

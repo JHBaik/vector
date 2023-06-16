@@ -45,7 +45,7 @@ export interface CanvasCtx {
   unregisterListener: (cb: () => void) => void;
   handleCommand: (command: AllCommands) => void;
 
-  log: (str: string) => void;
+  log: (str: string | object) => void;
 }
 
 export interface NewShape<T extends AllShapes> extends Command<"shape/new"> {
