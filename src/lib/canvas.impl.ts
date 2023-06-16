@@ -13,7 +13,7 @@ class CanvasCtxImpl implements CanvasCtx {
   debugLog: string = "";
   private lastIdx = -1;
   private cbs: Set<() => void> = new Set();
-  private selected: Set<AllShapes> = new Set();
+  selected: Set<AllShapes> = new Set();
 
   private mode_map: Record<
     `${CanvasCtx["mode"]}_${KeyEvent["key"]}`,
@@ -75,6 +75,14 @@ class CanvasCtxImpl implements CanvasCtx {
         }
         break;
       }
+      case "shape/update": {
+        const item = this.canvas.shapes.find(
+          (it) => it.id === command.shape.id
+        );
+        if (!item) break;
+        Object.assign(item, command.shape);
+        break;
+      }
     }
 
     this.onChange();
@@ -95,6 +103,7 @@ class CanvasCtxImpl implements CanvasCtx {
   }
 
   private onChange() {
+    console.log(this.cbs);
     this.cbs.forEach((it) => it());
   }
 }

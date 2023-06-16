@@ -1,28 +1,37 @@
 import { useForm } from "react-hook-form";
 import { Circle } from "@/lib/shapes/circle";
+import { useEffect } from "react";
 
 export type CircleCreationData = Pick<Circle, "pivot" | "radius">;
 
 export function CircleForm({
   onSubmit,
   submitText,
+  initialValue,
 }: {
   onSubmit: (v: CircleCreationData) => void;
   submitText: string;
+  initialValue?: CircleCreationData;
 }) {
-  const { register, handleSubmit } = useForm<CircleCreationData>({
-    defaultValues: {
-      pivot: {
-        x: 170,
-        y: 170,
-      },
-      radius: 170,
-    },
-  });
+  const { register, handleSubmit, setValue } = useForm<{
+    d: CircleCreationData;
+  }>({});
+  useEffect(() => {
+    setValue(
+      "d",
+      initialValue || {
+        pivot: {
+          x: 170,
+          y: 170,
+        },
+        radius: 170,
+      }
+    );
+  }, [setValue, initialValue]);
 
   return (
     <form
-      onSubmit={handleSubmit((d) =>
+      onSubmit={handleSubmit(({ d }) =>
         onSubmit({
           pivot: {
             x: +d.pivot.x,
@@ -33,13 +42,13 @@ export function CircleForm({
       )}
     >
       x=
-      <input type="number" {...register("pivot.x")} />
+      <input type="number" {...register("d.pivot.x")} />
       <br />
       y=
-      <input type="number" {...register("pivot.y")} />
+      <input type="number" {...register("d.pivot.y")} />
       <br />
       r=
-      <input type="number" {...register("radius")} />
+      <input type="number" {...register("d.radius")} />
       <br />
       <input type="submit" value={submitText} />
     </form>

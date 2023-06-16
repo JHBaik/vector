@@ -3,6 +3,7 @@ import {
   MouseClickEvent,
   MouseDragEvent,
   NewShape,
+  UpdateShape,
 } from "@/lib/base";
 import { Path } from "@/lib/shapes/path";
 import { Rectangle } from "@/lib/shapes/rectangle";
@@ -12,6 +13,7 @@ export type AllShapes = Path | Circle | Rectangle;
 
 export type AllCommands =
   | NewShape<AllShapes>
+  | UpdateShape<AllShapes>
   | KeyEvent
   | MouseClickEvent
   | MouseDragEvent;

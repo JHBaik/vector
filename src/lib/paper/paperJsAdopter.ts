@@ -16,6 +16,7 @@ export class PaperJsAdopter {
   constructor(canvas: HTMLCanvasElement, paper: paper.PaperScope) {
     console.warn("Recreating paper ctx");
     paper.setup(canvas);
+    paper.project.clear();
     paper.view.update();
     this.paper = paper;
 

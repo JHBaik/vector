@@ -46,6 +46,8 @@ export interface CanvasCtx {
   handleCommand: (command: AllCommands) => void;
 
   log: (str: string | object) => void;
+
+  selected: Set<AllShapes>;
 }
 
 export interface NewShape<T extends AllShapes> extends Command<"shape/new"> {
@@ -62,4 +64,9 @@ export interface MouseClickEvent extends Command<"shape/mouse_click"> {
 
 export interface MouseDragEvent extends Command<"shape/mouse_drag"> {
   delta: Coordinate;
+}
+
+export interface UpdateShape<T extends AllShapes>
+  extends Command<"shape/update"> {
+  shape: T;
 }
