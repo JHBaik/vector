@@ -1,20 +1,14 @@
-import { useCanvasCtx } from "@/lib/hooks/useCanvasCtx";
-import { CircleCreation } from "@/components/circleCreation";
-import { RectangleCreation } from "@/components/rectangleCreation";
-import { useShapeBaseForm } from "@/components/useShapeBaseForm";
+import { M1 } from "@/components/m1";
+import styles from "@/css/layout.module.css";
 
 export default function Index() {
-  const ctx = useCanvasCtx();
-  const { baseShapeForm: baseShapeForm, baseProps } = useShapeBaseForm();
   return (
-    <>
-      <pre>{JSON.stringify(ctx, null, 4)}</pre>
-      <hr />
-      {baseShapeForm}
-      <hr />
-      <CircleCreation baseProps={baseProps} />
-      <hr />
-      <RectangleCreation baseProps={baseProps} />
-    </>
+    <div className={[styles.splitHorizontal, styles.root].join(" ")}>
+      <M1 />
+      <div className={styles.splitVertical}>
+        <div className={styles.red}></div>
+        <div className={styles.green}></div>
+      </div>
+    </div>
   );
 }

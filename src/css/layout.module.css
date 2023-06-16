@@ -1,0 +1,33 @@
+.root {
+    background-color: aqua;
+    padding: 0;
+    margin: 0;
+    width: 1080px;
+    height: 750px;
+    overflow: hidden;
+}
+
+.splitHorizontal {
+    display: flex;
+    flex-direction: row;
+}
+
+.splitVertical {
+    display: flex;
+    flex-direction: column;
+}
+
+.splitHorizontal > div,
+.splitVertical > div
+{
+    flex: 1;
+}
+
+
+.red {
+    background-color: #e2a5a5;
+}
+
+.green {
+    background-color: #a2e8a2;
+}
