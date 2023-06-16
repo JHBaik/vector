@@ -1,4 +1,4 @@
-import { AllCommands, SupportedShapes } from "@/lib/meta";
+import { AllCommands, AllShapes } from "@/lib/meta";
 import { Command } from "@/lib/types";
 
 export interface Coordinate {
@@ -11,7 +11,7 @@ export interface Coordinate {
  */
 export interface Shape<T extends Shape<T>> {
   id: number;
-  type: SupportedShapes;
+  type: string;
   lineColor: string;
   lineWidth: number;
   closed: boolean;
@@ -21,13 +21,13 @@ export interface Shape<T extends Shape<T>> {
 export interface Canvas {
   width: number;
   height: number;
-  shapes: Shape<any>[];
+  shapes: AllShapes[];
 }
 
-export interface ShapeProvider<SHAPE extends Shape<any>> {
-  shape: SupportedShapes;
-  handleCommand: (command: AllCommands, shape: SHAPE) => SHAPE;
-}
+// export interface ShapeProvider<SHAPE extends Shape<any>> {
+//   shape: SupportedShapes;
+//   handleCommand: (command: AllCommands, shape: SHAPE) => SHAPE;
+// }
 
 export interface CanvasCtx {
   canvas: Canvas;
@@ -38,6 +38,6 @@ export interface CanvasCtx {
   handleCommand: (command: AllCommands) => void;
 }
 
-export interface NewShape<T extends Shape<any>> extends Command<"shape/new"> {
+export interface NewShape<T extends AllShapes> extends Command<"shape/new"> {
   shape: T;
 }

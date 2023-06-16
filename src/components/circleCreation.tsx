@@ -12,14 +12,14 @@ interface circleCreationData {
 export function CircleCreation({ baseProps }: { baseProps: BaseProps }) {
   const { register, handleSubmit } = useForm<circleCreationData>();
   const ctx = useCanvasCtx();
-  console.table({ baseProps });
+
   const onCreate = ({ x, y, r }: circleCreationData) => {
     ctx.handleCommand({
       name: "shape/new",
       shape: {
         ...baseProps,
         type: "circle",
-        center: { x, y },
+        center: { x: +x, y: +y },
         closed: true,
         radius: r,
       } as Circle,

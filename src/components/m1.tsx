@@ -8,7 +8,9 @@ export function M1() {
   const { baseShapeForm: baseShapeForm, baseProps } = useShapeBaseForm();
   return (
     <div style={{ maxWidth: 180 }}>
-      <pre>{JSON.stringify(ctx, null, 4)}</pre>
+      <pre style={{ height: 350, overflow: "scroll" }}>
+        {JSON.stringify(ctx, null, 4)}
+      </pre>
       <hr />
       {baseShapeForm}
       <hr />

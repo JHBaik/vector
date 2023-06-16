@@ -1,8 +1,11 @@
 import { NewShape } from "@/lib/base";
+import { Path } from "@/lib/shapes/path";
+import { Rectangle } from "@/lib/shapes/rectangle";
+import { Circle } from "@/lib/shapes/circle";
 
-export type SupportedShapes = "path" | "circle" | "rectangle";
+export type AllShapes = Path | Circle | Rectangle;
 
-export type AllCommands = NewShape<any>;
+export type AllCommands = NewShape<AllShapes>;
 
 // export type SupportedCommands =
 //   | (

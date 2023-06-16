@@ -20,9 +20,9 @@ export function RectangleCreation({ baseProps }: { baseProps: BaseProps }) {
         ...baseProps,
         type: "rectangle",
         closed: true,
-        topRight: { x, y },
-        width: w,
-        height: h,
+        topRight: { x: +x, y: +y },
+        width: +w,
+        height: +h,
       } as Rectangle,
     });
   };

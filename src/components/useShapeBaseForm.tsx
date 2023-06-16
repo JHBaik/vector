@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
 import { Shape } from "@/lib/base";
 import { useForm } from "react-hook-form";
+import { AllShapes } from "@/lib/meta";
 
 export type BaseProps = Pick<
-  Shape<any>,
+  AllShapes,
   "lineColor" | "fillColor" | "lineWidth"
 >;
 
 export function useShapeBaseForm() {
   const [baseProps, setBaseProps] = useState<BaseProps>(() => {
-    console.warn("SETTING DEF");
     return {
-      lineColor: "#000",
-      fillColor: "#000",
-      lineWidth: 1,
+      lineColor: "#ff0",
+      fillColor: "#0ff",
+      lineWidth: 5,
     };
   });
 
@@ -21,7 +21,6 @@ export function useShapeBaseForm() {
 
   useEffect(() => {
     const sub = watch((value, info) => {
-      console.table({ value });
       setBaseProps({
         ...value,
       } as BaseProps);
@@ -42,7 +41,7 @@ export function useShapeBaseForm() {
         <input type="text" {...register("lineColor")} />
         <br />
         lineWidth=
-        <input type="checkbox" {...register("lineWidth")} />
+        <input type="number" {...register("lineWidth")} />
         <br />
       </form>
     ),
