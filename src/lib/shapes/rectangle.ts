@@ -2,7 +2,7 @@ import { Coordinate, Shape } from "@/lib/base";
 
 export interface Rectangle extends Shape<Rectangle> {
   type: "rectangle";
-  topRight: Coordinate;
+  // topRight: Coordinate;
   width: number;
   height: number;
 }

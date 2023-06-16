@@ -19,7 +19,7 @@ export function CircleCreation({ baseProps }: { baseProps: BaseProps }) {
       shape: {
         ...baseProps,
         type: "circle",
-        center: { x: +x, y: +y },
+        pivot: { x: +x, y: +y },
         closed: true,
         radius: r,
       } as Circle,

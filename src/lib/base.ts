@@ -16,6 +16,10 @@ export interface Shape<T extends Shape<T>> {
   lineWidth: number;
   closed: boolean;
   fillColor: string;
+  pivot: Coordinate;
+
+  // below is runtime only
+  _selected: boolean;
 }
 
 export interface Canvas {
