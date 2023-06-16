@@ -3,7 +3,7 @@ import styles from "@/css/layout.module.css";
 import { useEffect, useRef } from "react";
 import { useCanvasCtx } from "@/lib/hooks/useCanvasCtx";
 import { usePaperJs } from "@/lib/hooks/usePaperJs";
-import { PaperJsRenderer } from "@/lib/paper/renderer";
+import { PaperJsAdopter } from "@/lib/paper/renderer";
 
 export default function Index() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -15,7 +15,7 @@ export default function Index() {
       return;
     }
 
-    const renderer = new PaperJsRenderer(
+    const renderer = new PaperJsAdopter(
       canvasRef.current,
       new paperJs.PaperScope()
     );

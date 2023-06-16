@@ -22,6 +22,8 @@ export interface Canvas {
   width: number;
   height: number;
   shapes: AllShapes[];
+
+  // get<T extends AllShapes = AllShapes>(): (id: number) => T;
 }
 
 // export interface ShapeProvider<SHAPE extends Shape<any>> {
@@ -30,6 +32,7 @@ export interface Canvas {
 // }
 
 export interface CanvasCtx {
+  mode: "idle" | "select" | "move";
   canvas: Canvas;
   debugLog: string;
 
@@ -43,4 +46,16 @@ export interface CanvasCtx {
 
 export interface NewShape<T extends AllShapes> extends Command<"shape/new"> {
   shape: T;
+}
+
+export interface KeyEvent extends Command<"shape/key_event"> {
+  key: "shift" | "alt"; //| '' | 'meta'
+}
+
+export interface MouseClickEvent extends Command<"shape/mouse_click"> {
+  item_id?: number;
+}
+
+export interface MouseDragEvent extends Command<"shape/mouse_drag"> {
+  delta: Coordinate;
 }
