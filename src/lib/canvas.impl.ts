@@ -12,8 +12,8 @@ class CanvasCtxImpl implements CanvasCtx {
 
   handleCommand(command: AllCommands) {
     this.canvas.shapes.push({
-      id: ++this.lastIdx,
       ...command.shape,
+      id: ++this.lastIdx,
     });
     this.onChange();
   }
