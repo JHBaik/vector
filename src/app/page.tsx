@@ -1,39 +1,35 @@
-'use client';
-import styles from './page.module.css';
-import React, { useEffect, useMemo, useRef, useState, WheelEvent } from 'react';
-import type * as paper from 'paper';
-import { SketchPicker } from 'react-color';
-import { SafeHydrate } from '@/util/safeh';
-import dynamic from 'next/dynamic';
-import NoSSR from 'react-no-ssr';
+"use client";
+import styles from "./page.module.css";
+import React, { useEffect, useMemo, useRef, useState, WheelEvent } from "react";
+import type * as paper from "paper";
+import { SketchPicker } from "react-color";
+import { SafeHydrate } from "@/util/safeh";
+import dynamic from "next/dynamic";
+import NoSSR from "react-no-ssr";
 
 function Canvas({
-                  pScope,
-                  ...props
-                }: {
-  pScope: paper.PaperScope | undefined,
+  pScope,
+  ...props
+}: {
+  pScope: paper.PaperScope | undefined;
 } & React.CanvasHTMLAttributes<HTMLCanvasElement>) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  console.log('canvas render');
+  console.log("canvas render");
 
   useEffect(() => {
-
     if (!pScope) return;
 
     const canvas = canvasRef.current;
     if (!canvas) return;
-    console.log({x: pScope});
-    console.log('setup pp');
+    console.log({ x: pScope });
+    console.log("setup pp");
     pScope.setup(canvas);
 
-    const savedData = localStorage.getItem('DATA');
+    const savedData = localStorage.getItem("DATA");
     savedData && pScope.project.importJSON(savedData);
   }, [pScope, canvasRef]);
 
-  return (
-    <canvas ref={canvasRef} {...props}>
-    </canvas>
-  );
+  return <canvas ref={canvasRef} {...props}></canvas>;
 }
 
 function Home() {
@@ -42,18 +38,17 @@ function Home() {
   useEffect(() => {
     (async () => {
       if (pScope) return;
-      const paper = await import('paper');
+      const paper = await import("paper");
       setPScope(new paper.PaperScope());
     })();
 
-    return () => {
-    };
+    return () => {};
   }, [pScope]);
 
   useEffect(() => {
     let id = setInterval(() => {
       if (!pScope) return;
-      localStorage.setItem('DATA', pScope.project.exportJSON());
+      localStorage.setItem("DATA", pScope.project.exportJSON());
     }, 5000);
 
     return () => {
@@ -83,10 +78,12 @@ function Home() {
     activateCursor();
   }, [tCursor, pScope]);
 
-  const [strokeColor, setStrokeColor] = useState('#000000');
-  const [fillColor, setFillColor] = useState('#000000');
+  const [strokeColor, setStrokeColor] = useState("#000000");
+  const [fillColor, setFillColor] = useState("#000000");
   const [singleObjSelected, setSingleObjSelected] = useState(false);
-  const [selectedObj, setSelectedObj] = useState<{item:paper.Item | null}>({item:null});
+  const [selectedObj, setSelectedObj] = useState<{ item: paper.Item | null }>({
+    item: null,
+  });
 
   function activateCursor() {
     if (!pScope || !tCursor) return;
@@ -98,13 +95,13 @@ function Home() {
     };
 
     tCursor.onKeyDown = (e: paper.KeyEvent) => {
-      if (e.key === 'meta') {
+      if (e.key === "meta") {
         state.meta = true;
       }
     };
 
     tCursor.onKeyUp = (e: paper.KeyEvent) => {
-      if (e.key === 'meta') {
+      if (e.key === "meta") {
         state.meta = false;
       }
     };
@@ -119,7 +116,7 @@ function Home() {
 
         if (selectedItem) {
           selectedItem.selected = true;
-          setSelectedObj({item:selectedItem});
+          setSelectedObj({ item: selectedItem });
         }
 
         setSingleObjSelected(pScope.project.selectedItems.length === 1);
@@ -128,7 +125,9 @@ function Home() {
     };
     tCursor.onMouseDrag = (e: paper.ToolEvent) => {
       state.mouseDragging = true;
-      pScope.project.selectedItems.forEach(it => it.position = it.position.add(e.delta));
+      pScope.project.selectedItems.forEach(
+        (it) => (it.position = it.position.add(e.delta))
+      );
     };
   }
 
@@ -155,7 +154,7 @@ function Home() {
     };
 
     tCircle.onMouseUp = () => {
-      tCursor?.activate()
+      tCursor?.activate();
     };
   }
 
@@ -191,7 +190,7 @@ function Home() {
     };
 
     tRectangle.onMouseUp = () => {
-      tCursor?.activate()
+      tCursor?.activate();
     };
   }
 
@@ -210,7 +209,7 @@ function Home() {
     };
 
     tLine.onMouseUp = (e: paper.ToolEvent) => {
-      tCursor?.activate()
+      tCursor?.activate();
     };
   }
 
@@ -220,16 +219,21 @@ function Home() {
     let newZoom: number;
     const oldZoom = pScope.view.zoom;
     if (event.deltaY > 0) {
-      console.log('zoom -');
+      console.log("zoom -");
       newZoom = pScope.view.zoom * 0.98;
     } else {
-      console.log('zoom +');
+      console.log("zoom +");
       newZoom = pScope.view.zoom * 1.02;
     }
 
     const beta = oldZoom / newZoom;
-    const {x, y} = (event.target as HTMLCanvasElement).getBoundingClientRect();
-    const mousePosition = (new pScope.Point(event.clientX, event.clientY)).subtract([x, y]);
+    const { x, y } = (
+      event.target as HTMLCanvasElement
+    ).getBoundingClientRect();
+    const mousePosition = new pScope.Point(
+      event.clientX,
+      event.clientY
+    ).subtract([x, y]);
 
     //viewToProject: gives the coordinates in the Project space from the Screen Coordinates
     const mpos = pScope.view.viewToProject(mousePosition);
@@ -247,7 +251,7 @@ function Home() {
   function onChangeProp(json: string) {
     if (!selectedObj.item) return;
     selectedObj.item.importJSON(json);
-    setSelectedObj({item:selectedObj.item});
+    setSelectedObj({ item: selectedObj.item });
   }
 
   function toBack() {
@@ -259,9 +263,9 @@ function Home() {
   }
 
   function deleteObj() {
-    if(!pScope)return;
+    if (!pScope) return;
 
-    pScope.project.selectedItems.forEach(it => it.remove());
+    pScope.project.selectedItems.forEach((it) => it.remove());
   }
 
   return (
@@ -280,9 +284,9 @@ function Home() {
           </li>
         </ul>
         <button></button>
-        <br/>
+        <br />
         <button onClick={() => activateCursor()}>Selection</button>
-        <br/>
+        <br />
         <span>Add obj</span>
         <ul>
           <li>
@@ -296,31 +300,51 @@ function Home() {
           </li>
         </ul>
         <span>Color</span>
-        <span>Stroke Color <div className={styles.selectedColor}
-                                style={{backgroundColor: strokeColor}}/></span><br/>
+        <span>
+          Stroke Color{" "}
+          <div
+            className={styles.selectedColor}
+            style={{ backgroundColor: strokeColor }}
+          />
+        </span>
+        <br />
 
-        <span>Fill Color<div className={styles.selectedColor} style={{backgroundColor: fillColor}}/></span>
+        <span>
+          Fill Color
+          <div
+            className={styles.selectedColor}
+            style={{ backgroundColor: fillColor }}
+          />
+        </span>
 
         <SketchPicker
           color={fillColor}
-          onChangeComplete={color => {
+          onChangeComplete={(color) => {
             if (!pScope || !tCircle) return;
             setFillColor(color.hex);
           }}
         />
       </div>
-      {singleObjSelected && selectedObj &&
-          <textarea
-              value={
-                (singleObjSelected && selectedObj.item) ?
-                  JSON.stringify(selectedObj.item.exportJSON({asString: false}), null, 2) : ''
-              }
-              onChange={e => onChangeProp(e.target.value)}
-          />}
+      {singleObjSelected && selectedObj && (
+        <textarea
+          value={
+            singleObjSelected && selectedObj.item
+              ? JSON.stringify(
+                  selectedObj.item.exportJSON({ asString: false }),
+                  null,
+                  2
+                )
+              : ""
+          }
+          onChange={(e) => onChangeProp(e.target.value)}
+        />
+      )}
       <div>
         <Canvas
           pScope={pScope}
-          height={600} width={900} style={{background: 'white'}}
+          height={600}
+          width={900}
+          style={{ background: "white" }}
           onWheel={onMouseWheel}
         />
       </div>
@@ -331,14 +355,15 @@ function Home() {
 function SafeHome() {
   return (
     <NoSSR>
-      <SafeHydrate><Home/></SafeHydrate>
+      <SafeHydrate>
+        <Home />
+      </SafeHydrate>
     </NoSSR>
   );
 }
 
-
 export default dynamic(() => Promise.resolve(SafeHome), {
-  ssr: false
+  ssr: false,
 });
 
 export function generateStaticParams() {

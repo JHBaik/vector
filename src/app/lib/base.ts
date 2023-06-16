@@ -1,5 +1,5 @@
-import { SupportedCommands, SupportedShapes } from '@/app/lib/meta';
-import { Command } from '@/app/lib/types';
+import { SupportedCommands, SupportedShapes } from "@/app/lib/meta";
+import { Command } from "@/app/lib/types";
 
 export interface Coordinate {
   x: number;
@@ -17,7 +17,6 @@ export interface Shape {
   closed: boolean;
   fillColor: string;
 }
-
 
 export interface Canvas {
   width: number;
@@ -37,6 +36,6 @@ export interface Context {
   handleCommand: (command: SupportedCommands) => {};
 }
 
-export interface NewShape extends Command<'shape/new'> {
+export interface NewShape extends Command<"shape/new"> {
   shape: Shape;
 }

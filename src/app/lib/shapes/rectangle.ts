@@ -1,7 +1,7 @@
-import { Coordinate, Shape } from '@/app/lib/base';
+import { Coordinate, Shape } from "@/app/lib/base";
 
 interface Rectangle extends Shape {
-  type: 'rectangle';
+  type: "rectangle";
   topRight: Coordinate;
   width: number;
   height: number;

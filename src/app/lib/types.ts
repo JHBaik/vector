@@ -1,4 +1,4 @@
-import { SupportedCommands } from '@/app/lib/meta';
+import { SupportedCommands } from "@/app/lib/meta";
 
 export interface Command<NAME extends SupportedCommands> {
   target_id: number;
