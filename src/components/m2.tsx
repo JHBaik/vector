@@ -51,6 +51,14 @@ export function M2() {
     });
   };
 
+  const updateZIdx = (type: "+" | "-") => {
+    ctx.handleCommand({
+      name: "shape/z_index",
+      item_id: selectedItem?.id,
+      type: type,
+    });
+  };
+
   return (
     <div style={{ maxWidth: 180 }}>
       <span>Selected : {selectedItem?.id ?? "NONE"}</span>
@@ -70,6 +78,12 @@ export function M2() {
           onSubmit={onUpdateRect}
           initialValue={selectedItem as Rectangle}
         />
+      )}
+      {editType !== "none" && (
+        <>
+          <button onClick={() => updateZIdx("+")}>Z Index +</button>
+          <button onClick={() => updateZIdx("-")}>Z Index -</button>
+        </>
       )}
     </div>
   );

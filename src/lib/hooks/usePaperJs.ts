@@ -11,7 +11,9 @@ export function usePaperJs() {
       setPScope(new paper.PaperScope());
     })();
 
-    return () => {};
+    return () => {
+      pScope?.project?.remove();
+    };
   }, [pScope]);
 
   return pScope;

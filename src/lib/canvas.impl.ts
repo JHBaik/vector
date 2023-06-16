@@ -83,6 +83,19 @@ class CanvasCtxImpl implements CanvasCtx {
         Object.assign(item, command.shape);
         break;
       }
+      case "shape/z_index": {
+        const idx = this.canvas.shapes.findIndex(
+          (it) => it.id === command.item_id
+        );
+        if (idx === -1) break;
+        const item = this.canvas.shapes.splice(idx, 1);
+        const targetIdx =
+          command.type === "+"
+            ? this.canvas.shapes.length // to top
+            : 0; // to bottom
+        this.canvas.shapes.splice(targetIdx, 0, item[0]);
+        break;
+      }
     }
 
     this.onChange();

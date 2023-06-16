@@ -4,6 +4,7 @@ import {
   MouseDragEvent,
   NewShape,
   UpdateShape,
+  UpdateZIndex,
 } from "@/lib/base";
 import { Path } from "@/lib/shapes/path";
 import { Rectangle } from "@/lib/shapes/rectangle";
@@ -16,7 +17,8 @@ export type AllCommands =
   | UpdateShape<AllShapes>
   | KeyEvent
   | MouseClickEvent
-  | MouseDragEvent;
+  | MouseDragEvent
+  | UpdateZIndex;
 
 // export type SupportedCommands =
 //   | (

@@ -70,3 +70,8 @@ export interface UpdateShape<T extends AllShapes>
   extends Command<"shape/update"> {
   shape: T;
 }
+
+export interface UpdateZIndex extends Command<"shape/z_index"> {
+  item_id?: number;
+  type: "+" | "-";
+}
