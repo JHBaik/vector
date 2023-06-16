@@ -7,14 +7,21 @@ class CanvasCtxImpl implements CanvasCtx {
     height: 0,
     shapes: [],
   };
+  debugLog: string = "";
   private lastIdx = -1;
   private cbs: Set<() => void> = new Set();
 
   handleCommand(command: AllCommands) {
-    this.canvas.shapes.push({
-      ...command.shape,
-      id: ++this.lastIdx,
-    });
+    switch (command.name) {
+      case "shape/new": {
+        this.canvas.shapes.push({
+          ...command.shape,
+          id: ++this.lastIdx,
+        });
+        break;
+      }
+    }
+
     this.onChange();
   }
 
@@ -24,6 +31,11 @@ class CanvasCtxImpl implements CanvasCtx {
 
   unregisterListener(cb: () => void) {
     this.cbs.delete(cb);
+  }
+
+  log(str: string): void {
+    this.debugLog = str + "\n" + this.debugLog;
+    this.onChange();
   }
 
   private onChange() {

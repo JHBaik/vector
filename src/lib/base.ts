@@ -31,11 +31,14 @@ export interface Canvas {
 
 export interface CanvasCtx {
   canvas: Canvas;
+  debugLog: string;
 
   // registerShapeProvider: (provider: ShapeProvider<any>) => {};
   registerListener: (cb: () => void) => void;
   unregisterListener: (cb: () => void) => void;
   handleCommand: (command: AllCommands) => void;
+
+  log: (str: string) => void;
 }
 
 export interface NewShape<T extends AllShapes> extends Command<"shape/new"> {

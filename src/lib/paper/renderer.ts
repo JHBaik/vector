@@ -1,5 +1,14 @@
 import type * as paper from "paper";
 import { AllShapes } from "@/lib/meta";
+import { getCanvasCtx } from "@/lib/canvas.impl";
+
+declare global {
+  namespace paper {
+    interface Item {
+      _id: number;
+    }
+  }
+}
 
 export class PaperJsRenderer {
   private paper: paper.PaperScope;
@@ -7,6 +16,48 @@ export class PaperJsRenderer {
   constructor(canvas: HTMLCanvasElement, paper: paper.PaperScope) {
     paper.setup(canvas);
     this.paper = paper;
+
+    const tool = new this.paper.Tool();
+    const ctx = getCanvasCtx();
+
+    tool.activate();
+    const toolMouseLog = (e: paper.ToolEvent) => {
+      const visited = new Set();
+      ctx.log(
+        "PAPER TOOL :: " +
+          JSON.stringify({
+            type: e.type,
+            id: e.item?._id,
+            delta: e.delta,
+            point: e.point,
+            downPoint: e.downPoint,
+            count: e.count,
+            lastPoint: e.lastPoint,
+            middlePoint: e.middlePoint,
+            timeStamp: e.timeStamp,
+          })
+      );
+    };
+    const toolKeyboardLog = (e: paper.KeyEvent) => {
+      const visited = new Set();
+      ctx.log(
+        "PAPER TOOL :: " +
+          JSON.stringify({
+            type: e.type,
+            key: e.key,
+            timeStamp: e.timeStamp,
+            character: e.character,
+          })
+      );
+    };
+
+    tool.onKeyUp = toolKeyboardLog;
+    tool.onKeyDown = toolKeyboardLog;
+
+    tool.onMouseDrag = toolMouseLog;
+    tool.onMouseDown = toolMouseLog;
+    // tool.onMouseMove = toolLog;
+    tool.onMouseUp = toolMouseLog;
   }
 
   render(shapes: AllShapes[]) {
@@ -23,6 +74,7 @@ export class PaperJsRenderer {
           obj.strokeColor = new this.paper.Color(shape.lineColor);
           obj.fillColor = new this.paper.Color(shape.fillColor);
           obj.strokeWidth = shape.lineWidth;
+          obj.set({ _id: shape.id });
           break;
         }
         case "circle": {
@@ -30,6 +82,7 @@ export class PaperJsRenderer {
           obj.strokeColor = new this.paper.Color(shape.lineColor);
           obj.fillColor = new this.paper.Color(shape.fillColor);
           obj.strokeWidth = shape.lineWidth;
+          obj.set({ _id: shape.id });
           break;
         }
       }

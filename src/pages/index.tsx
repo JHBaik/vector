@@ -31,14 +31,25 @@ export default function Index() {
   }, [canvasRef, paperJs]);
 
   return (
-    <div className={[styles.splitHorizontal, styles.root].join(" ")}>
-      <M1 />
-      <div className={styles.splitVertical}>
-        <canvas
-          ref={canvasRef}
-          style={{ width: "100%", height: "100%", backgroundColor: "green" }}
-        />
+    <div className={[styles.splitVertical, styles.root].join(" ")}>
+      <div className={styles.splitHorizontal}>
+        <M1 />
+        <div className={styles.splitVertical}>
+          <canvas
+            ref={canvasRef}
+            style={{ width: "100%", height: "100%", backgroundColor: "green" }}
+          />
+        </div>
       </div>
+      <pre
+        style={{
+          overflow: "scroll",
+          height: "100%",
+          backgroundColor: "#ebebeb",
+        }}
+      >
+        {ctx.debugLog}
+      </pre>
     </div>
   );
 }

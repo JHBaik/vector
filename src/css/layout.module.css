@@ -3,7 +3,7 @@
     padding: 0;
     margin: 0;
     width: 1080px;
-    height: 750px;
+    height: 1000px;
     overflow: hidden;
 }
 
@@ -17,8 +17,8 @@
     flex-direction: column;
 }
 
-.splitHorizontal > div,
-.splitVertical > div
+.splitHorizontal > *,
+.splitVertical > *
 {
     flex: 1;
 }
