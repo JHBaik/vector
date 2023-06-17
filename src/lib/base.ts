@@ -6,9 +6,6 @@ export interface Coordinate {
   y: number;
 }
 
-/**
- * Canvas 의 기본은 선을 그리고 색을 채우는 것
- */
 export interface Shape<T extends Shape<T>> {
   id: number;
   type: string;
