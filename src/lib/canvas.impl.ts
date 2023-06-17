@@ -1,6 +1,6 @@
 import { CanvasCtx } from "@/lib/model/context";
 import { CommandImplBase } from "@/lib/command/_cmd.base";
-import { commandFactory } from "@/lib/command.factory";
+import { commandFactory } from "@/lib/factory/command.factory";
 import { AllCommands } from "@/lib/model/command";
 import { AllShapes } from "@/lib/model/shape";
 import { Canvas } from "@/lib/model/canvas";
@@ -26,7 +26,12 @@ export class CanvasCtxImpl implements CanvasCtx {
   handleCommand(command: AllCommands) {
     this.log(command);
 
-    const cmd: CommandImplBase<AllCommands> = commandFactory(command);
+    const cmd = commandFactory(command);
+
+    if (!cmd) {
+      console.warn("Unregistered cmd execution request. " + command.name);
+      return;
+    }
 
     cmd.execute(this);
 

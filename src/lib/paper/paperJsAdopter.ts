@@ -1,7 +1,7 @@
 import type * as paper from "paper";
 import { getCanvasCtx } from "@/lib/canvas.impl";
 import { AllShapes } from "@/lib/model/shape";
-import { rendererFactory } from "@/lib/renderer.factory";
+import { rendererFactory } from "@/lib/factory/renderer.factory";
 
 declare global {
   namespace paper {
@@ -73,7 +73,7 @@ export class PaperJsAdopter {
       let renderer = rendererFactory(shape);
 
       if (!renderer) {
-        // TODO WARN LOG
+        console.warn("Unregistered shape render request. " + shape.type);
         continue;
       }
 

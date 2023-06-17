@@ -5,8 +5,11 @@ import { MouseDragEventImpl } from "@/lib/command/mouse_drag_event.cmd";
 import { UpdateShapeImpl } from "@/lib/command/update_shape.cmd";
 import { UpdateZIndexImpl } from "@/lib/command/update_z_index.cmd";
 import { AllCommands } from "@/lib/model/command";
+import { CommandImplBase } from "@/lib/command/_cmd.base";
 
-export function commandFactory(command: AllCommands) {
+export function commandFactory(
+  command: AllCommands
+): CommandImplBase<AllCommands> | undefined {
   switch (command.name) {
     case "shape/new":
       return new NewShapeImpl(command);
@@ -25,5 +28,7 @@ export function commandFactory(command: AllCommands) {
     case "shape/z_index": {
       return new UpdateZIndexImpl(command);
     }
+    default:
+      return;
   }
 }
