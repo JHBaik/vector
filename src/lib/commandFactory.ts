@@ -4,7 +4,7 @@ import { MouseClickEventImpl } from "@/lib/command/mouse_click_event.cmd";
 import { MouseDragEventImpl } from "@/lib/command/mouse_drag_event.cmd";
 import { UpdateShapeImpl } from "@/lib/command/update_shape.cmd";
 import { UpdateZIndexImpl } from "@/lib/command/update_z_index.cmd";
-import { AllCommands } from "@/lib/meta";
+import { AllCommands } from "@/lib/model/command";
 
 export function commandFactory(command: AllCommands) {
   switch (command.name) {

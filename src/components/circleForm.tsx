@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { Circle } from "@/lib/shapes/circle";
+import { Circle } from "@/lib/model/shapes/circle";
 import { useEffect } from "react";
 
 export type CircleCreationData = Pick<Circle, "pivot" | "radius">;

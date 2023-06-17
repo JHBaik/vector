@@ -5,10 +5,10 @@ import {
   RectangleCreationData,
   RectangleForm,
 } from "@/components/rectangleForm";
-import { AllShapes } from "@/lib/meta";
-import { Circle } from "@/lib/shapes/circle";
-import { Rectangle } from "@/lib/shapes/rectangle";
+import { Circle } from "@/lib/model/shapes/circle";
+import { Rectangle } from "@/lib/model/shapes/rectangle";
 import copy from "fast-copy";
+import { AllShapes } from "@/lib/model/shape";
 
 export function M2() {
   const ctx = useCanvasCtx();

@@ -1,4 +1,4 @@
-import { Coordinate, Shape } from "@/lib/domain";
+import { Coordinate, Shape } from "@/lib/model/shape";
 
 export interface Path extends Shape<Path> {
   type: "path";

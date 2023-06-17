@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { Rectangle } from "@/lib/shapes/rectangle";
+import { Rectangle } from "@/lib/model/shapes/rectangle";
 import { useEffect } from "react";
 
 export type RectangleCreationData = Pick<

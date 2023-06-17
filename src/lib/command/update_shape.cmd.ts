@@ -1,6 +1,7 @@
-import { CanvasCtx, UpdateShape } from "@/lib/domain";
-import { AllShapes } from "@/lib/meta";
-import { CommandImplBase } from "@/lib/cmd.base";
+import { CanvasCtx } from "@/lib/model/context";
+import { CommandImplBase } from "@/lib/command/_cmd.base";
+import { UpdateShape } from "@/lib/model/command";
+import { AllShapes } from "@/lib/model/shape";
 
 export class UpdateShapeImpl extends CommandImplBase<UpdateShape<AllShapes>> {
   execute(ctx: CanvasCtx): void {

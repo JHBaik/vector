@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { Shape } from "@/lib/domain";
 import { useForm } from "react-hook-form";
-import { AllShapes } from "@/lib/meta";
+import { AllShapes } from "@/lib/model/shape";
 
 export type BaseProps = Pick<
   AllShapes,

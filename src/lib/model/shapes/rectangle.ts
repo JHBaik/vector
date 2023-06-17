@@ -1,4 +1,4 @@
-import { Coordinate, Shape } from "@/lib/domain";
+import { Shape } from "@/lib/model/shape";
 
 export interface Rectangle extends Shape<Rectangle> {
   type: "rectangle";

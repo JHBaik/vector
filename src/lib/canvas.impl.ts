@@ -1,7 +1,9 @@
-import { Canvas, CanvasCtx } from "@/lib/domain";
-import { AllCommands, AllShapes } from "@/lib/meta";
-import { CommandImplBase } from "@/lib/cmd.base";
+import { CanvasCtx } from "@/lib/model/context";
+import { CommandImplBase } from "@/lib/command/_cmd.base";
 import { commandFactory } from "@/lib/commandFactory";
+import { AllCommands } from "@/lib/model/command";
+import { AllShapes } from "@/lib/model/shape";
+import { Canvas } from "@/lib/model/canvas";
 
 export class CanvasCtxImpl implements CanvasCtx {
   mode: CanvasCtx["mode"] = "idle";

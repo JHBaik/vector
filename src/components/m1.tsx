@@ -5,8 +5,8 @@ import {
   RectangleForm,
   RectangleCreationData,
 } from "@/components/rectangleForm";
-import { Rectangle } from "@/lib/shapes/rectangle";
-import { Circle } from "@/lib/shapes/circle";
+import { Rectangle } from "@/lib/model/shapes/rectangle";
+import { Circle } from "@/lib/model/shapes/circle";
 
 export function M1() {
   const ctx = useCanvasCtx();

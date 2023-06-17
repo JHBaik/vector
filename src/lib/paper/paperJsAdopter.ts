@@ -1,6 +1,6 @@
 import type * as paper from "paper";
-import { AllShapes } from "@/lib/meta";
 import { getCanvasCtx } from "@/lib/canvas.impl";
+import { AllShapes } from "@/lib/model/shape";
 
 declare global {
   namespace paper {

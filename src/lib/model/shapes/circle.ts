@@ -1,4 +1,4 @@
-import { Shape } from "@/lib/domain";
+import { Shape } from "@/lib/model/shape";
 
 export interface Circle extends Shape<Circle> {
   type: "circle";
