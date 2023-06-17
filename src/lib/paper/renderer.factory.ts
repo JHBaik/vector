@@ -1,7 +1,7 @@
 import { AllShapes } from "@/lib/model/shape";
-import { RectangleRenderer } from "@/lib/shape_renderer/rectangle.renderer";
-import { CircleRenderer } from "@/lib/shape_renderer/circle.renderer";
-import { ShapeRenderer } from "@/lib/shape_renderer/_shape_renderer.base";
+import { RectangleRenderer } from "@/lib/paper/shape_renderer/rectangle.renderer";
+import { CircleRenderer } from "@/lib/paper/shape_renderer/circle.renderer";
+import { ShapeRenderer } from "@/lib/paper/shape_renderer/_shape_renderer.base";
 
 export function rendererFactory(
   shape: AllShapes

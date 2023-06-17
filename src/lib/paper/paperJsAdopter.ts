@@ -1,7 +1,7 @@
 import type * as paper from "paper";
 import { getCanvasCtx } from "@/lib/canvas.impl";
 import { AllShapes } from "@/lib/model/shape";
-import { rendererFactory } from "@/lib/factory/renderer.factory";
+import { rendererFactory } from "@/lib/paper/renderer.factory";
 
 declare global {
   namespace paper {

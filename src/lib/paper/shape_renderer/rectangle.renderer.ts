@@ -1,5 +1,5 @@
 import { Rectangle } from "@/lib/model/shapes/rectangle";
-import { ShapeRenderer } from "@/lib/shape_renderer/_shape_renderer.base";
+import { ShapeRenderer } from "@/lib/paper/shape_renderer/_shape_renderer.base";
 
 export class RectangleRenderer extends ShapeRenderer<Rectangle> {
   render(paper: paper.PaperScope, shape: Rectangle): paper.Shape {
