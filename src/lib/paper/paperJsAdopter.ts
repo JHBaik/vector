@@ -1,6 +1,7 @@
 import type * as paper from "paper";
 import { getCanvasCtx } from "@/lib/canvas.impl";
 import { AllShapes } from "@/lib/model/shape";
+import { rendererFactory } from "@/lib/renderer.factory";
 
 declare global {
   namespace paper {
@@ -25,21 +26,6 @@ export class PaperJsAdopter {
 
     tool.activate();
     const toolMouseLog = (e: paper.ToolEvent) => {
-      // ctx.log(
-      //   "PAPER TOOL :: " +
-      //     JSON.stringify({
-      //       type: e.type,
-      //       id: e.item?._id,
-      //       delta: e.delta,
-      //       point: e.point,
-      //       downPoint: e.downPoint,
-      //       count: e.count,
-      //       lastPoint: e.lastPoint,
-      //       middlePoint: e.middlePoint,
-      //       timeStamp: e.timeStamp,
-      //     })
-      // );
-
       switch (e.type) {
         case "mouseup":
           ctx.handleCommand({
@@ -60,15 +46,6 @@ export class PaperJsAdopter {
     };
 
     const toolKeyboardLog = (e: paper.KeyEvent) => {
-      // ctx.log(
-      //   "PAPER TOOL :: " +
-      //     JSON.stringify({
-      //       type: e.type,
-      //       key: e.key,
-      //       timeStamp: e.timeStamp,
-      //       character: e.character,
-      //     })
-      // );
       switch (e.key) {
         case "shift":
         case "alt":
@@ -93,30 +70,14 @@ export class PaperJsAdopter {
     this.paper.project.clear();
 
     for (const shape of shapes) {
-      switch (shape.type) {
-        case "path":
-          break;
-        case "rectangle": {
-          const from = new this.paper.Point(shape.pivot);
-          const to = from.add([shape.width, shape.height]);
-          const obj = new this.paper.Shape.Rectangle(from, to);
-          obj.strokeColor = new this.paper.Color(shape.lineColor);
-          obj.fillColor = new this.paper.Color(shape.fillColor);
-          obj.strokeWidth = shape.lineWidth;
-          obj.set({ _id: shape.id });
-          obj.selected = shape._selected;
-          break;
-        }
-        case "circle": {
-          const obj = new this.paper.Shape.Circle(shape.pivot, shape.radius);
-          obj.strokeColor = new this.paper.Color(shape.lineColor);
-          obj.fillColor = new this.paper.Color(shape.fillColor);
-          obj.strokeWidth = shape.lineWidth;
-          obj.set({ _id: shape.id });
-          obj.selected = shape._selected;
-          break;
-        }
+      let renderer = rendererFactory(shape);
+
+      if (!renderer) {
+        // TODO WARN LOG
+        continue;
       }
+
+      renderer._render(this.paper, shape);
     }
   }
 }

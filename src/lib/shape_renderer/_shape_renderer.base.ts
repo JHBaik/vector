@@ -2,7 +2,7 @@ import { AllShapes } from "@/lib/model/shape";
 import type * as paper from "paper";
 
 export abstract class ShapeRenderer<T extends AllShapes> {
-  abstract render(paper: paper.PaperScope, shape: T): paper.Path;
+  abstract render(paper: paper.PaperScope, shape: T): paper.Shape;
 
   _render(paper: paper.PaperScope, shape: T) {
     const obj = this.render(paper, shape);

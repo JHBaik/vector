@@ -1,6 +1,6 @@
 import { CanvasCtx } from "@/lib/model/context";
 import { CommandImplBase } from "@/lib/command/_cmd.base";
-import { commandFactory } from "@/lib/commandFactory";
+import { commandFactory } from "@/lib/command.factory";
 import { AllCommands } from "@/lib/model/command";
 import { AllShapes } from "@/lib/model/shape";
 import { Canvas } from "@/lib/model/canvas";
