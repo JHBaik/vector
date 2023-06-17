@@ -1,7 +1,14 @@
 import { Canvas, CanvasCtx, KeyEvent } from "@/lib/base";
 import { AllCommands, AllShapes } from "@/lib/meta";
+import { CommandImplBase } from "@/lib/command/command_impl.base";
+import { UpdateZIndexImpl } from "@/lib/command/update_z_index_impl";
+import { UpdateShapeImpl } from "@/lib/command/update_shape_impl";
+import { MouseDragEventImpl } from "@/lib/command/mouse_drag_event_impl";
+import { MouseClickEventImpl } from "@/lib/command/mouse_click_event_impl";
+import { KeyEventImpl } from "@/lib/command/key_event_impl";
+import { NewShapeImpl } from "@/lib/command/new_shape_impl";
 
-class CanvasCtxImpl implements CanvasCtx {
+export class CanvasCtxImpl implements CanvasCtx {
   mode: CanvasCtx["mode"] = "idle";
 
   canvas: Canvas = {
@@ -11,11 +18,9 @@ class CanvasCtxImpl implements CanvasCtx {
   };
 
   debugLog: string = "";
-  private lastIdx = -1;
-  private cbs: Set<() => void> = new Set();
   selected: Set<AllShapes> = new Set();
-
-  private mode_map: Record<
+  // TODO make infra
+  mode_map: Record<
     `${CanvasCtx["mode"]}_${KeyEvent["key"]}`,
     CanvasCtx["mode"]
   > = {
@@ -26,77 +31,45 @@ class CanvasCtxImpl implements CanvasCtx {
     move_alt: "move",
     move_shift: "idle",
   };
+  private lastIdx = -1;
+  private cbs: Set<() => void> = new Set();
+
+  newItemId(): number {
+    return ++this.lastIdx;
+  }
 
   handleCommand(command: AllCommands) {
     this.log(command);
 
+    let cmd: CommandImplBase<AllCommands>;
+
     switch (command.name) {
-      case "shape/new": {
-        this.canvas.shapes.push({
-          ...command.shape,
-          id: ++this.lastIdx,
-        });
+      case "shape/new":
+        cmd = new NewShapeImpl(command);
         break;
-      }
       case "shape/key_event": {
-        this.mode =
-          this.mode_map[
-            (this.mode + "_" + command.key) as keyof CanvasCtxImpl["mode_map"]
-          ];
+        cmd = new KeyEventImpl(command);
         break;
       }
       case "shape/mouse_click": {
-        switch (this.mode) {
-          case "select": {
-            command.item_id;
-            const item = this.canvas.shapes.find(
-              (it) => it.id === command.item_id
-            );
-            if (!item) break;
-            item._selected = true;
-            this.selected.add(item);
-            break;
-          }
-          case "idle": {
-            this.selected.forEach((it) => (it._selected = false));
-            this.selected.clear();
-          }
-        }
+        cmd = new MouseClickEventImpl(command);
         break;
       }
       case "shape/mouse_drag": {
-        switch (this.mode) {
-          case "move":
-            const { x, y } = command.delta;
-            this.selected.forEach((it) => {
-              it.pivot.x += x;
-              it.pivot.y += y;
-            });
-        }
+        cmd = new MouseDragEventImpl(command);
         break;
       }
       case "shape/update": {
-        const item = this.canvas.shapes.find(
-          (it) => it.id === command.shape.id
-        );
-        if (!item) break;
-        Object.assign(item, command.shape);
+        cmd = new UpdateShapeImpl(command);
         break;
       }
       case "shape/z_index": {
-        const idx = this.canvas.shapes.findIndex(
-          (it) => it.id === command.item_id
-        );
-        if (idx === -1) break;
-        const item = this.canvas.shapes.splice(idx, 1);
-        const targetIdx =
-          command.type === "+"
-            ? this.canvas.shapes.length // to top
-            : 0; // to bottom
-        this.canvas.shapes.splice(targetIdx, 0, item[0]);
+        cmd = new UpdateZIndexImpl(command);
         break;
       }
     }
+
+    cmd.execute(this);
 
     this.onChange();
   }

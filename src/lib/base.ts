@@ -41,10 +41,16 @@ export interface CanvasCtx {
   registerListener: (cb: () => void) => void;
   unregisterListener: (cb: () => void) => void;
   handleCommand: (command: AllCommands) => void;
+  newItemId(): number;
 
   log: (str: string | object) => void;
 
   selected: Set<AllShapes>;
+
+  mode_map: Record<
+    `${CanvasCtx["mode"]}_${KeyEvent["key"]}`,
+    CanvasCtx["mode"]
+  >;
 }
 
 export interface NewShape<T extends AllShapes> extends Command<"shape/new"> {
