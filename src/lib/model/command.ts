@@ -1,4 +1,4 @@
-import {} from "@/lib/model/context";
+import { supported_keys } from "@/lib/model/context";
 import { AllShapes, Coordinate } from "@/lib/model/shape";
 export interface Command<NAME> {
   target_id?: number;
@@ -18,7 +18,7 @@ export interface NewShape<T extends AllShapes> extends Command<"shape/new"> {
 }
 
 export interface KeyEvent extends Command<"shape/key_event"> {
-  key: "shift" | "alt"; //| '' | 'meta'
+  key: supported_keys;
 }
 
 export interface MouseClickEvent extends Command<"shape/mouse_click"> {

@@ -1,5 +1,6 @@
-import { CanvasCtx, UpdateZIndex } from "@/lib/model/context";
+import { CanvasCtx } from "@/lib/model/context";
 import { CommandImplBase } from "@/lib/command/_cmd.base";
+import { UpdateZIndex } from "@/lib/model/command";
 
 export class UpdateZIndexImpl extends CommandImplBase<UpdateZIndex> {
   execute(ctx: CanvasCtx): void {

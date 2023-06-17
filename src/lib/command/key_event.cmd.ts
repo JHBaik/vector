@@ -1,5 +1,6 @@
-import { CanvasCtx, KeyEvent, mode_map } from "@/lib/model/context";
+import { CanvasCtx, mode_map } from "@/lib/model/context";
 import { CommandImplBase } from "@/lib/command/_cmd.base";
+import { KeyEvent } from "@/lib/model/command";
 
 export class KeyEventImpl extends CommandImplBase<KeyEvent> {
   execute(ctx: CanvasCtx): void {

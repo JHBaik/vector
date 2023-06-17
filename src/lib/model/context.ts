@@ -1,6 +1,5 @@
-import { AllCommands } from "@/lib/model/command";
+import { AllCommands, KeyEvent } from "@/lib/model/command";
 import { AllShapes } from "@/lib/model/shape";
-import KeyEvent = paper.KeyEvent;
 import { Canvas } from "@/lib/model/canvas";
 
 export interface CanvasCtx {
@@ -19,6 +18,7 @@ export interface CanvasCtx {
 }
 
 export type mode = "idle" | "select" | "move";
+export type supported_keys = "shift" | "alt"; //| '' | 'meta';
 
 export const mode_map = {
   idle_alt: "select",

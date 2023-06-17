@@ -1,5 +1,6 @@
-import { CanvasCtx, MouseDragEvent } from "@/lib/model/context";
+import { CanvasCtx } from "@/lib/model/context";
 import { CommandImplBase } from "@/lib/command/_cmd.base";
+import { MouseDragEvent } from "@/lib/model/command";
 
 export class MouseDragEventImpl extends CommandImplBase<MouseDragEvent> {
   execute(ctx: CanvasCtx): void {
