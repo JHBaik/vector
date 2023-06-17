@@ -1,7 +1,6 @@
-import { Coordinate, Shape } from "@/lib/base";
+import { Shape } from "@/lib/domain";
 
 export interface Circle extends Shape<Circle> {
   type: "circle";
-  // center: Coordinate;
   radius: number;
 }

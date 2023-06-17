@@ -1,5 +1,5 @@
-import { CanvasCtx, MouseClickEvent } from "@/lib/base";
-import { CommandImplBase } from "@/lib/command/command_impl.base";
+import { CanvasCtx, MouseClickEvent } from "@/lib/domain";
+import { CommandImplBase } from "@/lib/cmd.base";
 
 export class MouseClickEventImpl extends CommandImplBase<MouseClickEvent> {
   execute(ctx: CanvasCtx): void {

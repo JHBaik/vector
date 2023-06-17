@@ -1,13 +1,13 @@
-import { Canvas, CanvasCtx, KeyEvent } from "@/lib/base";
+import { Canvas, CanvasCtx, KeyEvent } from "@/lib/domain";
 import { AllCommands, AllShapes } from "@/lib/meta";
-import { CommandImplBase } from "@/lib/command/command_impl.base";
-import { UpdateZIndexImpl } from "@/lib/command/update_z_index_impl";
-import { UpdateShapeImpl } from "@/lib/command/update_shape_impl";
-import { MouseDragEventImpl } from "@/lib/command/mouse_drag_event_impl";
-import { MouseClickEventImpl } from "@/lib/command/mouse_click_event_impl";
-import { KeyEventImpl } from "@/lib/command/key_event_impl";
-import { NewShapeImpl } from "@/lib/command/new_shape_impl";
-import { commandFactory } from "@/lib/command/command.factory";
+import { CommandImplBase } from "@/lib/cmd.base";
+import { UpdateZIndexImpl } from "@/lib/command/update_z_index.cmd";
+import { UpdateShapeImpl } from "@/lib/command/update_shape.cmd";
+import { MouseDragEventImpl } from "@/lib/command/mouse_drag_event.cmd";
+import { MouseClickEventImpl } from "@/lib/command/mouse_click_event.cmd";
+import { KeyEventImpl } from "@/lib/command/key_event.cmd";
+import { NewShapeImpl } from "@/lib/command/new_shape.cmd";
+import { commandFactory } from "@/lib/commandFactory";
 
 export class CanvasCtxImpl implements CanvasCtx {
   mode: CanvasCtx["mode"] = "idle";

@@ -5,7 +5,7 @@ import {
   NewShape,
   UpdateShape,
   UpdateZIndex,
-} from "@/lib/base";
+} from "@/lib/domain";
 import { Path } from "@/lib/shapes/path";
 import { Rectangle } from "@/lib/shapes/rectangle";
 import { Circle } from "@/lib/shapes/circle";

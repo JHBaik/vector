@@ -1,9 +1,9 @@
-import { NewShapeImpl } from "@/lib/command/new_shape_impl";
-import { KeyEventImpl } from "@/lib/command/key_event_impl";
-import { MouseClickEventImpl } from "@/lib/command/mouse_click_event_impl";
-import { MouseDragEventImpl } from "@/lib/command/mouse_drag_event_impl";
-import { UpdateShapeImpl } from "@/lib/command/update_shape_impl";
-import { UpdateZIndexImpl } from "@/lib/command/update_z_index_impl";
+import { NewShapeImpl } from "@/lib/command/new_shape.cmd";
+import { KeyEventImpl } from "@/lib/command/key_event.cmd";
+import { MouseClickEventImpl } from "@/lib/command/mouse_click_event.cmd";
+import { MouseDragEventImpl } from "@/lib/command/mouse_drag_event.cmd";
+import { UpdateShapeImpl } from "@/lib/command/update_shape.cmd";
+import { UpdateZIndexImpl } from "@/lib/command/update_z_index.cmd";
 import { AllCommands } from "@/lib/meta";
 
 export function commandFactory(command: AllCommands) {

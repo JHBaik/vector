@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Shape } from "@/lib/base";
+import { Shape } from "@/lib/domain";
 import { useForm } from "react-hook-form";
 import { AllShapes } from "@/lib/meta";
 

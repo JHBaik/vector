@@ -1,5 +1,5 @@
 import { AllCommands } from "@/lib/meta";
-import { CanvasCtx } from "@/lib/base";
+import { CanvasCtx } from "@/lib/domain";
 
 export abstract class CommandImplBase<T extends AllCommands> {
   protected cmd: T;

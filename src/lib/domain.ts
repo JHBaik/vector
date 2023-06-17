@@ -1,5 +1,9 @@
 import { AllCommands, AllShapes } from "@/lib/meta";
-import { Command } from "@/lib/types";
+
+export interface Command<NAME> {
+  target_id?: number;
+  name: NAME;
+}
 
 export interface Coordinate {
   x: number;
